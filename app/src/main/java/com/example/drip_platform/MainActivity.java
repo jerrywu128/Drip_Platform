@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.drip_platform.R;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final RequestQueue queue = Volley.newRequestQueue(this);
+
         Numericalvalue = (TextView)findViewById(R.id.Numericalvalue);
         Time = (TextView)findViewById(R.id.Time);
         image = (ImageView)findViewById(R.id.image);
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 h.postDelayed(this, 1000);
-                getData(url);
+                getData(url,queue);
 
             }
         };
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private String getData(String urlString){
+    private String getData(String urlString,RequestQueue queue){
         String resule="";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(urlString, null,
@@ -119,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
+        queue.add(jsonObjectRequest);
 
         return resule;
     }
