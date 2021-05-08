@@ -23,7 +23,7 @@ import com.android.volley.VolleyError;
 import com.example.drip_platform.R;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
+import com.google.android.material.navigation.NavigationView;
 
 
 import org.json.JSONArray;
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBar actionBar;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout Drawer;
+    private NavigationView na;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +56,27 @@ public class MainActivity extends AppCompatActivity {
         Time = (TextView)findViewById(R.id.Time);
         image = (ImageView)findViewById(R.id.image);
         Patient_ID=(TextView)findViewById(R.id.patient_ID);
+        na = (NavigationView)findViewById(R.id.NaList);
 
         Patient_ID.setText("UUID:test-0000-0001");
         image.setImageResource(R.drawable.drip);
 
-
-
         initActionBar();
+
+        na.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+            public boolean onNavigationItemSelected(MenuItem item) {
+
+                int id = item.getItemId();
+
+                if (id == R.id.action_home) {
+                    final Intent intent =new Intent(MainActivity.this,SecondActivity.class);
+                    startActivity(intent);
+
+                }
+                return true;
+            }
+
+        });
 
         Runnable runnable = new Runnable() {
             @Override
@@ -74,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         h.postDelayed(runnable, 1000);
 
     }
+
+
+
 
     private void initActionBar(){
         actionBar = getSupportActionBar();
