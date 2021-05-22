@@ -9,5 +9,9 @@
     <color name="pink">#fa8072</color>
     <color name="lightgray">#9affffff</color>
     <color name="lightblue">#e2f3ff</color>
+    <color name="w">#fff7f7</color>
+    <color name="gray">#dadada</color>
+    <color name="blue">#204969</color>
+    <color name="black">#000000</color>
 
 </resources>

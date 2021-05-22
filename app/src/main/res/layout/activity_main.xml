@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
 android:id="@+id/Drawer"
 android:layout_width="match_parent"
-android:layout_height="match_parent"
-xmlns:app="http://schemas.android.com/apk/res-auto">
+android:layout_height="match_parent">
 
 
 <LinearLayout
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue"
     android:orientation="vertical"
-    android:background="@color/lightblue"
 
     >
 
@@ -25,7 +25,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:background="@color/lightblue"
+        android:background="@color/blue"
         />
     <TextView
         android:layout_width="match_parent"
@@ -35,12 +35,12 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:background="@color/green"
         android:gravity="center"
         android:text="NPTU CSIE        X        DRIP PLATFORM"
         android:textColor="#ffffff"
-        android:textStyle="bold"
-        android:background="@color/cardview_dark_background"
-        android:textSize="10sp" />
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <TextView
     android:layout_width="match_parent"
@@ -52,10 +52,14 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
               android:layout_width="250dp"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
+              android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@."
               android:drawableRight="@drawable/ic_person_black_24dp"
               android:drawablePadding="16dp"
+              android:backgroundTint="@color/w"
               android:hint="Account"
-              android:inputType="text"
+              android:inputType="textVisiblePassword"
+              android:textColor="@color/w"
+              android:textColorHint="@color/w"
               android:textSize="16dp" />
 
 
@@ -64,13 +68,16 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     <EditText
         android:id="@+id/Password"
         android:layout_width="250dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:drawablePadding="16dp"
         android:drawableRight="@drawable/ic_lock_black_24dp"
+        android:drawablePadding="16dp"
+        android:backgroundTint="@color/w"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColor="@color/w"
+        android:textColorHint="@color/w"
         android:textSize="16dp"
-        android:layout_height="wrap_content"
         />
 
     <TextView
@@ -85,10 +92,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="15dp"
-        android:gravity="center"
         android:background="@color/colorlight"
+        android:gravity="center"
         android:textColor="@color/white"
+        android:textSize="15dp"
         />
 
 

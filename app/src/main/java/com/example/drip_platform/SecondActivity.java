@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,7 +32,7 @@ import com.google.android.material.navigation.NavigationView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.example.drip_platform.draw_elec_test;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -46,6 +47,8 @@ public class SecondActivity extends AppCompatActivity {
     private DrawerLayout Drawer;
     private NavigationView na;
     private Toolbar toolbar;
+    private electrocardiogram elec;
+    private draw_elec_test drawelecline;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -65,8 +68,10 @@ public class SecondActivity extends AppCompatActivity {
         image.setImageResource(R.drawable.drip);
         toolbar=(Toolbar)findViewById(R.id.toolbar);
 
-
+        drawelecline = new draw_elec_test();
+        start(elec);
         initActionBar();
+
 
         na.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -95,8 +100,15 @@ public class SecondActivity extends AppCompatActivity {
 
     }
 
+    public void start(View view) {
+        electrocardiogram elec = findViewById(R.id.electrocardiogram);
+        drawelecline.showWaveData(elec);
 
+    }
 
+    public void stop(View view) {
+        drawelecline.stop();
+    }
 
     private void initActionBar(){
 
@@ -113,6 +125,7 @@ public class SecondActivity extends AppCompatActivity {
 
         Drawer =(DrawerLayout)findViewById(R.id.Drawer);
         mDrawerToggle = new ActionBarDrawerToggle(this, Drawer,R.string.drawer_open,R.string.drawer_close);
+        mDrawerToggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.w));
 
         mDrawerToggle.syncState();
 

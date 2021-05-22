@@ -3,7 +3,8 @@
 android:id="@+id/Drawer"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-xmlns:app="http://schemas.android.com/apk/res-auto">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
 
 
@@ -12,14 +13,14 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/lightgray"
+    android:background="@color/gray"
 
     >
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorlight"
+        android:background="@color/blue"
         android:minHeight="?attr/actionBarSize" >
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +38,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:background="@color/lightgray"
+        android:background="@color/gray"
         />
     <TextView
         android:id="@+id/patient_ID"
@@ -45,10 +46,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:layout_height="wrap_content"
 
         android:background="@color/green"
-        android:textSize="20dp"
+        android:textSize="25dp"
 
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/w"
         />
 
 
@@ -62,11 +63,11 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/pink"
+            android:background="@color/blue"
             android:textSize="25dp"
             android:text="Please"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/w"
             />
 
         <TextView
@@ -74,9 +75,9 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:background="@color/pink"
+            android:background="@color/blue"
             android:text="wait...."
-            android:textColor="@color/white"
+            android:textColor="@color/w"
             android:gravity="center"
             android:textSize="25dp" />
 
@@ -85,19 +86,25 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:id="@+id/Distance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="@color/green"
         android:text="Distance: 10m"
-        android:textColor="@color/white"
+        android:textColor="@color/w"
         android:textSize="25dp" />
     <TextView
         android:id="@+id/Status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/green"
+        android:background="@color/blue"
         android:text="Status: Safe"
-        android:textColor="@color/white"
+        android:textColor="@color/w"
         android:textSize="25dp" />
 
+    <com.example.drip_platform.electrocardiogram
+        android:layout_width="match_parent"
+        android:layout_height="335dp"
+        android:id="@+id/electrocardiogram">
+
+    </com.example.drip_platform.electrocardiogram>
 </LinearLayout>
 
 <com.google.android.material.navigation.NavigationView
