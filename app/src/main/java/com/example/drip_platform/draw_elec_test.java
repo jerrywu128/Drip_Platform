@@ -3,6 +3,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.example.drip_platform.electrocardiogram;
+
 public class draw_elec_test {
     private Timer timer;
     private TimerTask timerTask;
@@ -14,7 +15,7 @@ public class draw_elec_test {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                elec.showLine(new Random().nextFloat()*(30f)-20f);//取得是-20到20间的浮点数
+                elec.showLine(new Random().nextFloat()*(30f)-20f);
             }
         };
         //500表示调用schedule方法后等待500ms后调用run方法，50表示以后调用run方法的时间间隔
