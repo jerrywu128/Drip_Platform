@@ -56,6 +56,7 @@ public class electrocardiogram extends View {
         mWidth = w;
         mHeight = h;
         super.onSizeChanged(w, h, oldw, oldh);
+        //System.out.println(h);
     }
 
     private void init() {
@@ -108,20 +109,18 @@ public class electrocardiogram extends View {
             return;
         }
         mPath.reset();
-        mPath.moveTo(0f,mHeight/2);
+        //mPath.moveTo(0f,mHeight/2);
+        mPath.moveTo(0f,0f);
         for (int i = 0;i<refreshList.size();i++){
             nowX = i* GRID_SMALL_WIDTH;
             float dataValue = (float) refreshList.get(i);
-            if(dataValue>0){
-                if(dataValue>MAX_VALUE * 0.8){
-                    dataValue = MAX_VALUE * 0.8f;
-                }
-            }else {
-                if(dataValue< -MAX_VALUE * 0.8){
-                    dataValue = -MAX_VALUE * 0.8f;
-                }
+            if(dataValue <= 0){
+                    dataValue = mHeight * 0.01f;
+            }else if(dataValue > mHeight){
+                dataValue = mHeight * 0.8f;
             }
-            nowY = mHeight/2 + dataValue *(mHeight/(MAX_VALUE*2));
+            //nowY = mHeight/2 + dataValue *(mHeight/(MAX_VALUE*2));
+            nowY = mHeight - dataValue;
             mPath.lineTo(nowX,nowY);
         }
         canvas.drawPath(mPath, mWavePaint);

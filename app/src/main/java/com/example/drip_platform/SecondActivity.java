@@ -19,11 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.drip_platform.R;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
@@ -32,10 +30,10 @@ import com.google.android.material.navigation.NavigationView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.example.drip_platform.draw_elec_test;
-import java.net.URL;
 
-import javax.net.ssl.HttpsURLConnection;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SecondActivity extends AppCompatActivity {
     private TextView Numericalvalue,Time,Patient_ID;
@@ -48,7 +46,11 @@ public class SecondActivity extends AppCompatActivity {
     private NavigationView na;
     private Toolbar toolbar;
     private electrocardiogram elec;
-    private draw_elec_test drawelecline;
+    //private draw_elec_test drawelecline;
+
+    private Timer timer;
+    private TimerTask timerTask;
+    String num = "0: 0";
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -68,10 +70,11 @@ public class SecondActivity extends AppCompatActivity {
         image.setImageResource(R.drawable.drip);
         toolbar=(Toolbar)findViewById(R.id.toolbar);
 
-        drawelecline = new draw_elec_test();
+        //drawelecline = new draw_elec_test();
         start(elec);
         initActionBar();
 
+        Numericalvalue.getText();
 
         na.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -102,12 +105,12 @@ public class SecondActivity extends AppCompatActivity {
 
     public void start(View view) {
         electrocardiogram elec = findViewById(R.id.electrocardiogram);
-        drawelecline.showWaveData(elec);
+        showWaveData(elec);
 
     }
 
     public void stop(View view) {
-        drawelecline.stop();
+        stop();
     }
 
     private void initActionBar(){
@@ -170,7 +173,7 @@ public class SecondActivity extends AppCompatActivity {
         return resule;
     }
 
-    private void parseJSON(JSONObject jsonObject) throws JSONException{
+    public void parseJSON(JSONObject jsonObject) throws JSONException{
 
 
         JSONObject feed = jsonObject.getJSONObject("feed");
@@ -185,8 +188,37 @@ public class SecondActivity extends AppCompatActivity {
         String N = content.getString("$t");
         Time.setText(T);
         Numericalvalue.setText(N);
+        num = N;
     }
 
+    public void showWaveData(final electrocardiogram elec){
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                float random = new Random().nextFloat()*(30f)-20f;
+                String[] tokens = num.split(": ");
+                //elec.showLine(new Random().nextFloat()*(30f)-20f);
+                elec.showLine(Float.parseFloat(tokens[1]));
+            }
+        };
+        //500表示调用schedule方法后等待500ms后调用run方法，50表示以后调用run方法的时间间隔
+        timer.schedule(timerTask,500,50);
+    }
 
+    /**
+     * 停止绘制波形
+     */
+    public void stop(){
+        if(timer != null){
+            timer.cancel();
+            timer.purge();
+            timer = null;
+        }
+        if(null != timerTask) {
+            timerTask.cancel();
+            timerTask = null;
+        }
+    }
 
 }
