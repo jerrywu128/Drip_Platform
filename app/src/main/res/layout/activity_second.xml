@@ -90,14 +90,42 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         android:text="Distance: 10m"
         android:textColor="@color/w"
         android:textSize="25dp" />
-    <TextView
-        android:id="@+id/Status"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
-        android:text="Status: Safe"
-        android:textColor="@color/w"
-        android:textSize="25dp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/Status"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/blue"
+            android:text="Status: Safe"
+            android:textColor="@color/w"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/Critical"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:background="@color/blue"
+            android:textColor="@color/w"
+            android:text=" 警戒值：Null"
+            android:textSize="25dp"
+            />
+
+        <Button
+            android:id="@+id/change_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="變更"
+            android:textSize="20dp"/>
+
+    </LinearLayout>
 
     <com.example.drip_platform.electrocardiogram
         android:layout_width="match_parent"

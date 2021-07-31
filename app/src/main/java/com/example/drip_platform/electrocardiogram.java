@@ -110,12 +110,12 @@ public class electrocardiogram extends View {
         }
         mPath.reset();
         //mPath.moveTo(0f,mHeight/2);
-        mPath.moveTo(0f,0f);
+        mPath.moveTo(0f,mHeight*0.1f);
         for (int i = 0;i<refreshList.size();i++){
             nowX = i* GRID_SMALL_WIDTH;
             float dataValue = (float) refreshList.get(i);
-            if(dataValue <= 0){
-                    dataValue = mHeight * 0.01f;
+            if(dataValue <= mHeight*0.1f){
+                    dataValue = mHeight * 0.1f;
             }else if(dataValue > mHeight){
                 dataValue = mHeight * 0.8f;
             }

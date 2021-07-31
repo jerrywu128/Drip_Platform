@@ -1,44 +1,37 @@
 package com.example.drip_platform;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SecondActivity extends AppCompatActivity {
-    private TextView Numericalvalue,Time,Patient_ID;
+    private TextView Numericalvalue,Time,Patient_ID,Critical_text;
     private ImageView image;
-    private static String url="https://spreadsheets.google.com/feeds/list/16tNGUftG-4GqH7POpbudnY49RxU14LC89mtgyN1kwXs/od6/public/values?alt=json";
+    private Button change_button;
+
     private Handler h = new Handler();
     private ActionBar actionBar;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -46,19 +39,20 @@ public class SecondActivity extends AppCompatActivity {
     private NavigationView na;
     private Toolbar toolbar;
     private electrocardiogram elec;
-    //private draw_elec_test drawelecline;
 
     private Timer timer;
     private TimerTask timerTask;
-    String num = "0: 0";
+    String num = "0:0";
 
+    int message = 0;
+    int Critical_value = -1;
+
+    private mongodb mongodb1 = new mongodb();
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-
-        final RequestQueue queue = Volley.newRequestQueue(this);
 
         Numericalvalue = (TextView)findViewById(R.id.Numericalvalue);
         Time = (TextView)findViewById(R.id.Time);
@@ -66,11 +60,15 @@ public class SecondActivity extends AppCompatActivity {
         Patient_ID=(TextView)findViewById(R.id.patient_ID);
         na = (NavigationView)findViewById(R.id.NaList);
 
+        Critical_text = (TextView)findViewById(R.id.Critical);
+        change_button = (Button)findViewById(R.id.change_button);
+        change_button.setOnClickListener(change_button_listen);
+
+
         Patient_ID.setText("UUID:test-0000-0001");
         image.setImageResource(R.drawable.drip);
         toolbar=(Toolbar)findViewById(R.id.toolbar);
 
-        //drawelecline = new draw_elec_test();
         start(elec);
         initActionBar();
 
@@ -93,10 +91,11 @@ public class SecondActivity extends AppCompatActivity {
 
         Runnable runnable = new Runnable() {
             @Override
+
             public void run() {
                 h.postDelayed(this, 1000);
-                getData(url,queue);
-
+                Number_value();
+                //getData(U,queue);
             }
         };
         h.postDelayed(runnable, 1000);
@@ -114,9 +113,6 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void initActionBar(){
-
-
-
 
         setSupportActionBar(toolbar);
 
@@ -145,7 +141,7 @@ public class SecondActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+/*
     private String getData(String urlString,RequestQueue queue){
         String resule="";
 
@@ -163,7 +159,6 @@ public class SecondActivity extends AppCompatActivity {
                 },new Response.ErrorListener(){
             public void onErrorResponse(VolleyError errror){
 
-
                 Log.e("回傳結果","結果=" + errror.toString());
             }
         });
@@ -171,43 +166,100 @@ public class SecondActivity extends AppCompatActivity {
         queue.add(jsonObjectRequest);
 
         return resule;
-    }
+    }*/
 
-    public void parseJSON(JSONObject jsonObject) throws JSONException{
+    public void Number_value(){
+        String [] data = mongodb1.show();
 
+        String T = "Please wait ..";
+        String N = "數值：0";
 
-        JSONObject feed = jsonObject.getJSONObject("feed");
+        try {
+            T = data[4];
+            N = "數值 " + data[8];
+            num = N;
 
-        JSONArray entry = feed.getJSONArray("entry");
-        JSONObject zero = entry.getJSONObject(0);
+            AlertDialog.Builder adbATM = new AlertDialog.Builder(SecondActivity.this);
+            adbATM.setTitle("警告");
+            adbATM.setIcon(R.mipmap.ic_launcher);
+            adbATM.setMessage("重量低於規定值");
+            adbATM.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    message = 0;
+                }
+            });
+            adbATM.setCancelable(false);
 
-        JSONObject title = zero.getJSONObject("title");
-        String T = title.getString("$t");
+            String[] tokens = num.split(":");
 
-        JSONObject content = zero.getJSONObject("content");
-        String N = content.getString("$t");
+            if (Integer.parseInt(tokens[1]) < Critical_value){
+                if (message == 0){
+                    adbATM.show();
+                    message=1;
+                }
+            }
+        }catch (Exception e) {
+            System.out.println("errorS");
+        }
         Time.setText(T);
         Numericalvalue.setText(N);
-        num = N;
     }
 
+    private Button.OnClickListener change_button_listen =
+            new Button.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(SecondActivity.this);
+                    View v = getLayoutInflater().inflate(R.layout.set_custom_dialog_layout_with_button, null);
+                    alertDialog.setView(v);
+                    Button btOK = v.findViewById(R.id.button_ok);
+                    Button btC = v.findViewById(R.id.buttonCancel);
+                    EditText editText = v.findViewById(R.id.Critical_value2);
+                    AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                    btOK.setOnClickListener((v1 -> {
+                        AlertDialog.Builder twoDialog = new AlertDialog.Builder(SecondActivity.this);
+                        twoDialog.setTitle("設定完成");
+                        twoDialog.setPositiveButton("瞭解", ((dialog1, which) -> {
+                        }));
+
+                        if(editText != null){
+                            Critical_value = Integer.parseInt(String.valueOf(editText.getText()));
+                            Critical_text.setText(" 警戒值:" + Critical_value);
+                            message = 0;
+                        }
+
+                        dialog.dismiss();
+                        twoDialog.show();
+                    }));
+
+                    btC.setOnClickListener((v1 -> {
+                        dialog.dismiss();
+                    }));
+                }
+            };
     public void showWaveData(final electrocardiogram elec){
         timer = new Timer();
         timerTask = new TimerTask() {
+
             @Override
             public void run() {
                 float random = new Random().nextFloat()*(30f)-20f;
-                String[] tokens = num.split(": ");
+                String[] tokens = num.split(":");
                 //elec.showLine(new Random().nextFloat()*(30f)-20f);
                 elec.showLine(Float.parseFloat(tokens[1]));
             }
         };
+
+
         //500表示调用schedule方法后等待500ms后调用run方法，50表示以后调用run方法的时间间隔
         timer.schedule(timerTask,500,50);
     }
 
     /**
-     * 停止绘制波形
+     * 停止繪製波型
      */
     public void stop(){
         if(timer != null){

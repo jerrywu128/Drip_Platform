@@ -8,8 +8,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.internal.Experimental;
 public class MainActivity extends AppCompatActivity {
 
     private Button bt;
@@ -20,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         bt =(Button)findViewById(R.id.log_in);
         bt.setText("Log In");
 
