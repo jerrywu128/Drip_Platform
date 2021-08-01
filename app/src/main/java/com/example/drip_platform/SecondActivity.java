@@ -32,7 +32,7 @@ public class SecondActivity extends AppCompatActivity {
     private ImageView image;
     private Button change_button;
 
-    private Handler h = new Handler();
+    private Handler handler = new Handler();
     private ActionBar actionBar;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout Drawer;
@@ -93,12 +93,12 @@ public class SecondActivity extends AppCompatActivity {
             @Override
 
             public void run() {
-                h.postDelayed(this, 1000);
+                handler.postDelayed(this, 1000);
                 Number_value();
                 //getData(U,queue);
             }
         };
-        h.postDelayed(runnable, 1000);
+        handler.postDelayed(runnable, 1000);
 
     }
 
@@ -186,7 +186,7 @@ public class SecondActivity extends AppCompatActivity {
             adbATM.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    message = 0;
+                   // message = 0;
                 }
             });
             adbATM.setCancelable(false);
@@ -220,19 +220,45 @@ public class SecondActivity extends AppCompatActivity {
                     AlertDialog dialog = alertDialog.create();
                     dialog.show();
                     btOK.setOnClickListener((v1 -> {
-                        AlertDialog.Builder twoDialog = new AlertDialog.Builder(SecondActivity.this);
-                        twoDialog.setTitle("設定完成");
-                        twoDialog.setPositiveButton("瞭解", ((dialog1, which) -> {
-                        }));
 
-                        if(editText != null){
-                            Critical_value = Integer.parseInt(String.valueOf(editText.getText()));
-                            Critical_text.setText(" 警戒值:" + Critical_value);
-                            message = 0;
+
+
+
+                        if(!editText.getText().toString().matches("")) {
+                            if(Integer.valueOf(editText.getText().toString())<=99999) {
+                                Critical_value = Integer.parseInt(String.valueOf(editText.getText()));
+                                Critical_text.setText(" 警戒值:" + Critical_value);
+                                message = 0;
+
+
+                                AlertDialog.Builder twoDialog = new AlertDialog.Builder(SecondActivity.this);
+                                twoDialog.setTitle("設定完成");
+                                twoDialog.setPositiveButton("確定", ((dialog1, which) -> {
+                                }));
+                                twoDialog.show();
+                            }
+                            else{
+                                AlertDialog.Builder twoDialog = new AlertDialog.Builder(SecondActivity.this);
+                                twoDialog.setTitle("數值不得超過99999");
+                                twoDialog.setPositiveButton("確定", ((dialog1, which) -> {
+                                }));
+                                twoDialog.show();
+                            }
+                            dialog.dismiss();
+
+
+                        }
+                        else{
+                            AlertDialog.Builder twoDialog = new AlertDialog.Builder(SecondActivity.this);
+                            twoDialog.setTitle("未輸入數值請重新輸入");
+                            twoDialog.setPositiveButton("確定", ((dialog1, which) -> {
+                            }));
+
+
+                            twoDialog.show();
+                            dialog.dismiss();
                         }
 
-                        dialog.dismiss();
-                        twoDialog.show();
                     }));
 
                     btC.setOnClickListener((v1 -> {

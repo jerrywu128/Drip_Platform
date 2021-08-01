@@ -28,9 +28,13 @@
                 android:id="@+id/buttonCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="退出"
+                android:text="取消"
                 tools:layout_editor_absoluteX="83dp"
                 tools:layout_editor_absoluteY="310dp" />
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                />
 
             <Button
                 android:id="@+id/button_ok"

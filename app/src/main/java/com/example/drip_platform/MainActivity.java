@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         img = (ImageView)findViewById(R.id.image2);
-        img.setImageResource(R.drawable.computing);
+        img.setImageResource(R.drawable.cross);
 /*
         actionBar = getSupportActionBar();
         actionBar.hide();

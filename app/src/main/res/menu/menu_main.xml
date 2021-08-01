@@ -5,7 +5,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/action_home"
-            android:icon="@drawable/homepage"
+            android:icon="@drawable/ic_baseline_home_24"
             android:title="首頁" />
 
         <item

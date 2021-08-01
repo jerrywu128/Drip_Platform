@@ -17,9 +17,11 @@ public class mongodb {
         a = a.replace(" ","");
         String z = a.replace("}","");
         String b = z.replace("\"",",");
-        String [] c = b.split(",");
+        String x = b.replace("{","");
+        String [] c = x.split(",");
 
         try {
+            System.out.println(Original_data);
             System.out.println(c[4]);
             System.out.println(c[8]);
         }catch (Exception e) {
@@ -51,6 +53,7 @@ public class mongodb {
 
                        while ((decode = in.readLine()) != null) {
                            Original_data += decode;
+
                        }
                        in.close();
                    }finally {

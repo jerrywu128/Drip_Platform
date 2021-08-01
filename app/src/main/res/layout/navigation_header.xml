@@ -6,11 +6,6 @@
     android:gravity="bottom"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="84dp"
-        android:layout_height="84dp"
-        android:contentDescription="@null"
-        android:src="@drawable/hospital" />
 
     <TextView
         android:id="@+id/txtHeader"

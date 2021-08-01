@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Drip_Platform</string>
+    <string name="app_name">NPTU\n點滴觀察員</string>
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
-    <string name="team">NPTU 智慧點滴系統平台</string>
+    <string name="team">NPTU&#160;點滴觀察員</string>
+    <string name="homepage_title">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NPTU CSIE&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;X&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;DRIP PLATFORM</string>
 </resources>
