@@ -12,6 +12,7 @@
 
         <EditText
             android:id="@+id/Critical_value2"
+            android:maxLength="5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
