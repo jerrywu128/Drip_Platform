@@ -2,14 +2,17 @@ package com.example.drip_platform;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -21,6 +24,7 @@ import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Random;
@@ -28,7 +32,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SecondActivity extends AppCompatActivity {
-    private TextView Numericalvalue,Time,Patient_ID,Critical_text;
+    private TextView Numericalvalue,Time,Patient_ID,Critical_text,Status;
     private ImageView image;
     private Button change_button;
 
@@ -39,6 +43,9 @@ public class SecondActivity extends AppCompatActivity {
     private NavigationView na;
     private Toolbar toolbar;
     private electrocardiogram elec;
+
+    private Spinner spn;
+    String[] spinner = new String[] {"剩餘劑量","脈搏"};
 
     private Timer timer;
     private TimerTask timerTask;
@@ -59,11 +66,42 @@ public class SecondActivity extends AppCompatActivity {
         image = (ImageView)findViewById(R.id.image);
         Patient_ID=(TextView)findViewById(R.id.patient_ID);
         na = (NavigationView)findViewById(R.id.NaList);
+        Status = (TextView)findViewById(R.id.Status);
+
+        spn = (Spinner)findViewById(R.id.spn);
+        ArrayAdapter<String> adapterBall = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,spinner);
+        adapterBall.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spn.setAdapter(adapterBall);
 
         Critical_text = (TextView)findViewById(R.id.Critical);
         change_button = (Button)findViewById(R.id.change_button);
         change_button.setOnClickListener(change_button_listen);
 
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+
+        bottomNavigationView.getMenu().setGroupCheckable(0, false, false);
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
+            switch (item.getItemId()) {
+
+                case R.id.action_home:
+
+                    break;
+                case R.id.action_help:
+                    Intent intent =new Intent(SecondActivity.this,Equipment_Program.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                case R.id.action_about:
+                    Intent intent2 =new Intent(SecondActivity.this,Persinal_Page.class);
+                    startActivity(intent2);
+                    finish();
+                    break;
+
+            }
+            return true;
+        });
 
         Patient_ID.setText("UUID:test-0000-0001");
         image.setImageResource(R.drawable.drip);
@@ -186,7 +224,6 @@ public class SecondActivity extends AppCompatActivity {
             adbATM.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                   // message = 0;
                 }
             });
             adbATM.setCancelable(false);
@@ -197,6 +234,8 @@ public class SecondActivity extends AppCompatActivity {
                 if (message == 0){
                     adbATM.show();
                     message=1;
+                    Status.setTextColor(Color.RED);
+                    Status.setText("狀態: 低下");
                 }
             }
         }catch (Exception e) {
@@ -220,8 +259,6 @@ public class SecondActivity extends AppCompatActivity {
                     AlertDialog dialog = alertDialog.create();
                     dialog.show();
                     btOK.setOnClickListener((v1 -> {
-
-
 
 
                         if(!editText.getText().toString().matches("")) {

@@ -16,5 +16,7 @@
                 android:id="@+id/action_about"
                 android:icon="@drawable/ic_baseline_person_24"
                 android:title="個人" />
+
         </group>
+
 </menu>

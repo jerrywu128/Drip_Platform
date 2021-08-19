@@ -127,56 +127,70 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:text="設定"
             android:textSize="15dp"/>
 
+
     </LinearLayout>
 
-    <com.example.drip_platform.electrocardiogram
-        android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:id="@+id/electrocardiogram">
-
-    </com.example.drip_platform.electrocardiogram>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        >
-        <Button
-            android:id="@+id/chane_button"
-            android:layout_width="55dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.example.drip_platform.electrocardiogram
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="數值/定位"
-            android:textSize="10dp"/>
+            android:id="@+id/electrocardiogram">
+
+        </com.example.drip_platform.electrocardiogram>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1111111111" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
 
         <TextView
             android:layout_width="10dp"
             android:layout_height="match_parent"
-            android:background="@color/blue"
-            />
+            android:background="@color/blue" />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/navigation"
             android:background="@android:color/white"
+            app:itemHorizontalTranslationEnabled="false"
+            app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_navigation_view"
-            app:itemHorizontalTranslationEnabled="false"
-            app:labelVisibilityMode="labeled"
-            />
+            app:menu="@menu/bottom_navigation_view" />
 
     </LinearLayout>
 </LinearLayout>
 
-<com.google.android.material.navigation.NavigationView
-    android:id="@+id/NaList"
-    android:layout_width="240dp"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    app:headerLayout="@layout/navigation_header"
-    app:menu="@menu/menu_main"
-    />
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/NaList"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/menu_main"
+        />
 
 
 
