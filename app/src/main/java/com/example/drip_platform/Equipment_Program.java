@@ -26,11 +26,11 @@ public class Equipment_Program extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                     break;
-                case R.id.action_help:
+                case R.id.action_device:
 
                     break;
-                case R.id.action_about:
-                    Intent intent2 = new Intent(Equipment_Program.this, Persinal_Page.class);
+                case R.id.action_personal:
+                    Intent intent2 = new Intent(Equipment_Program.this, Personal_Page.class);
                     startActivity(intent2);
                     finish();
                     break;

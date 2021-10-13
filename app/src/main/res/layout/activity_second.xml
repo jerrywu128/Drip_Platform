@@ -137,16 +137,19 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="horizontal">
 
         <com.example.drip_platform.electrocardiogram
+            android:id="@+id/electrocardiogram"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/electrocardiogram">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
         </com.example.drip_platform.electrocardiogram>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1111111111" />
+        <include
+            android:id="@+id/google_map_view"
+            layout="@layout/activity_google_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"></include>
 
 
     </LinearLayout>
@@ -178,19 +181,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_navigation_view" />
+            app:menu="@menu/bottom_navigation_view"
+            android:theme="@style/bottom_button"/>
 
     </LinearLayout>
 </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/NaList"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/menu_main"
-        />
+
 
 
 

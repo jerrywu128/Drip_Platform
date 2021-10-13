@@ -10,6 +10,7 @@ import java.net.URL;
 
 public class mongodb {
     String Original_data;
+    String GPS;
 
     public String [] show () {
         GetURLData();
@@ -19,11 +20,31 @@ public class mongodb {
         String b = z.replace("\"",",");
         String x = b.replace("{","");
         String [] c = x.split(",");
-
+        /*
         try {
             System.out.println(Original_data);
+            //System.out.println(c[4]);
+            //System.out.println(c[8]);
+        }catch (Exception e) {
+            System.out.println("error");
+        }*/
+        return c;
+    }
+
+    public String [] gps () {
+        Get_GPS_URLData();
+        String a = "\" "+ GPS + "\"";   //""date": "13:04:28","value": 6 "
+        a = a.replace(" ","");
+        String z = a.replace("}","");
+        String b = z.replace("\"",",");
+        String x = b.replace("{","");
+        String [] c = x.split(",");
+
+        try {
+            //System.out.println(GPS);
+            //System.out.println(Arrays.toString(c));
             System.out.println(c[4]);
-            System.out.println(c[8]);
+            System.out.println(c[9]);
         }catch (Exception e) {
             System.out.println("error");
         }
@@ -36,8 +57,6 @@ public class mongodb {
             public void run() {
                 Original_data = "";
                 String decode;
-
-
                 try {
                     URL u = new URL("http://203.64.128.65/data_list");
 
@@ -53,12 +72,44 @@ public class mongodb {
 
                        while ((decode = in.readLine()) != null) {
                            Original_data += decode;
-
                        }
                        in.close();
                    }finally {
                        hc.disconnect();
                    }
+                } catch (Exception e) {
+                    Log.e("Error", e.toString());
+                }
+            }
+        });
+        thread.start();
+    }
+
+    public void Get_GPS_URLData(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GPS = "";
+                String decode;
+                try {
+                    URL u = new URL("http://203.64.128.65/location_list");
+
+                    HttpURLConnection hc = (HttpURLConnection) u.openConnection();
+                    try{
+                        //hc.setRequestMethod("GET");
+                        hc.setDoInput(true);
+                        //hc.setDoOutput(true);
+                        hc.connect();
+
+                        BufferedReader in = new BufferedReader(new InputStreamReader(hc.getInputStream()));
+
+                        while ((decode = in.readLine()) != null) {
+                            GPS += decode;
+                        }
+                        in.close();
+                    }finally {
+                        hc.disconnect();
+                    }
                 } catch (Exception e) {
                     Log.e("Error", e.toString());
                 }

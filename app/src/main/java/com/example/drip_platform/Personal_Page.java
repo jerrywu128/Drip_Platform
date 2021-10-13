@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Persinal_Page extends AppCompatActivity {
+public class Personal_Page extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +22,16 @@ public class Persinal_Page extends AppCompatActivity {
             switch (item.getItemId()) {
 
                 case R.id.action_home:
-                    Intent intent = new Intent(Persinal_Page.this, SecondActivity.class);
+                    Intent intent = new Intent(Personal_Page.this, SecondActivity.class);
                     startActivity(intent);
                     finish();
                     break;
-                case R.id.action_help:
-                    Intent intent2 = new Intent(Persinal_Page.this, Equipment_Program.class);
+                case R.id.action_device:
+                    Intent intent2 = new Intent(Personal_Page.this, Equipment_Program.class);
                     startActivity(intent2);
                     finish();
                     break;
-                case R.id.action_about:
+                case R.id.action_personal:
 
                     break;
 

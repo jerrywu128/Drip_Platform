@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.Random;
 import java.util.Timer;
@@ -40,12 +40,16 @@ public class SecondActivity extends AppCompatActivity {
     private ActionBar actionBar;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout Drawer;
-    private NavigationView na;
+
     private Toolbar toolbar;
     private electrocardiogram elec;
+    private BottomNavigationView bottomNavigationView;
 
     private Spinner spn;
-    String[] spinner = new String[] {"剩餘劑量","脈搏"};
+    String[] spinner = new String[] {"剩餘劑量","脈搏","地圖"};
+    private View google_map_view,heart;
+   // private google_map google_map_app = new google_map();
+
 
     private Timer timer;
     private TimerTask timerTask;
@@ -65,36 +69,40 @@ public class SecondActivity extends AppCompatActivity {
         Time = (TextView)findViewById(R.id.Time);
         image = (ImageView)findViewById(R.id.image);
         Patient_ID=(TextView)findViewById(R.id.patient_ID);
-        na = (NavigationView)findViewById(R.id.NaList);
+
         Status = (TextView)findViewById(R.id.Status);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+
 
         spn = (Spinner)findViewById(R.id.spn);
         ArrayAdapter<String> adapterBall = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,spinner);
         adapterBall.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn.setAdapter(adapterBall);
+        spn.setOnItemSelectedListener(spnPreferListener);
+        google_map_view = (View) findViewById(R.id.google_map_view);
+        heart = (View)findViewById(R.id.electrocardiogram);
 
         Critical_text = (TextView)findViewById(R.id.Critical);
         change_button = (Button)findViewById(R.id.change_button);
         change_button.setOnClickListener(change_button_listen);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-
-        bottomNavigationView.getMenu().setGroupCheckable(0, false, false);
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
             switch (item.getItemId()) {
 
                 case R.id.action_home:
-
+                    Intent intent3 =new Intent(SecondActivity.this,google_map.class);
+                    startActivity(intent3);
+                    finish();
                     break;
-                case R.id.action_help:
+                case R.id.action_device:
                     Intent intent =new Intent(SecondActivity.this,Equipment_Program.class);
                     startActivity(intent);
                     finish();
                     break;
-                case R.id.action_about:
-                    Intent intent2 =new Intent(SecondActivity.this,Persinal_Page.class);
+                case R.id.action_personal:
+                    Intent intent2 =new Intent(SecondActivity.this, Personal_Page.class);
                     startActivity(intent2);
                     finish();
                     break;
@@ -112,20 +120,6 @@ public class SecondActivity extends AppCompatActivity {
 
         Numericalvalue.getText();
 
-        na.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
-            public boolean onNavigationItemSelected(MenuItem item) {
-
-                int id = item.getItemId();
-
-                if (id == R.id.action_home) {
-                    final Intent intent =new Intent(SecondActivity.this,MainActivity.class);
-                    startActivity(intent);
-
-                }
-                return true;
-            }
-
-        });
 
         Runnable runnable = new Runnable() {
             @Override
@@ -145,6 +139,32 @@ public class SecondActivity extends AppCompatActivity {
         showWaveData(elec);
 
     }
+
+    private Spinner.OnItemSelectedListener spnPreferListener =
+            new  Spinner.OnItemSelectedListener(){
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                    String sel = parent.getSelectedItem().toString();
+                    if (sel == spinner[2]){
+                        google_map_view.setVisibility(View.VISIBLE);
+                        try{
+
+                        }catch (Exception e){
+                            System.out.println("run_app_error");
+                        }
+
+                        heart.setVisibility(View.GONE);
+                    }else{
+                        google_map_view.setVisibility(View.GONE);
+                        heart.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent){
+
+                }
+            };
 
     public void stop(View view) {
         stop();
