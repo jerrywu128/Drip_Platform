@@ -1,4 +1,4 @@
-package com.example.drip_platform;
+package com.example.drip_platform.ExtendComponent;
 
 
 import android.content.Context;
@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class electrocardiogram extends View {
+public class Electrocardiogram extends View {
     private float mWidth = 0,mHeight = 0;//自身大小
     private int mBackGroundColor = Color.BLACK;
     private Paint mLinePaint;//画笔
@@ -37,17 +37,17 @@ public class electrocardiogram extends View {
     private int mWaveSmallLineColor = Color.parseColor("#092100");//小网格颜色
     private int mWaveBigLineColor = Color.parseColor("#1b4200");//小网格颜色
 
-    public electrocardiogram(Context context, @Nullable AttributeSet attrs) {
+    public Electrocardiogram(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public electrocardiogram(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public Electrocardiogram(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public electrocardiogram(Context context) {
+    public Electrocardiogram(Context context) {
         super(context);
     }
 

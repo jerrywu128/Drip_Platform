@@ -1,13 +1,14 @@
-package com.example.drip_platform;
+package com.example.drip_platform.View.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.drip_platform.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Equipment_Program extends AppCompatActivity {
+public class EquipmentInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,7 @@ public class Equipment_Program extends AppCompatActivity {
             switch (item.getItemId()) {
 
                 case R.id.action_home:
-                    Intent intent = new Intent(Equipment_Program.this, SecondActivity.class);
+                    Intent intent = new Intent(EquipmentInfoActivity.this, PreviewActivity.class);
                     startActivity(intent);
                     finish();
                     break;
@@ -30,7 +31,7 @@ public class Equipment_Program extends AppCompatActivity {
 
                     break;
                 case R.id.action_personal:
-                    Intent intent2 = new Intent(Equipment_Program.this, Personal_Page.class);
+                    Intent intent2 = new Intent(EquipmentInfoActivity.this, PersonalActivity.class);
                     startActivity(intent2);
                     finish();
                     break;

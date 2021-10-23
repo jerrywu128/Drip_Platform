@@ -13,25 +13,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.example.drip_platform;
+package com.example.drip_platform.View.Activity;
 
 import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.drip_platform.DB.Mongodb;
+import com.example.drip_platform.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class google_map extends AppCompatActivity implements OnMapReadyCallback {
+public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Handler handler = new Handler();
-    private GoogleMap mMap;
-    private mongodb mongodb1 = new mongodb();
+    private com.google.android.gms.maps.GoogleMap mMap;
+    private Mongodb mongodb1 = new Mongodb();
     private float final_la = 0;
     private float final_lo = 0;
     private float last_la = 0;
@@ -61,7 +62,7 @@ public class google_map extends AppCompatActivity implements OnMapReadyCallback 
      */
     @Override
 
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(com.google.android.gms.maps.GoogleMap googleMap) {
         mMap = googleMap;
         get_GPS();
         // Add a marker in Sydney and move the camera

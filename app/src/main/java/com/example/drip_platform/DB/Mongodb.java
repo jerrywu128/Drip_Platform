@@ -1,4 +1,4 @@
-package com.example.drip_platform;
+package com.example.drip_platform.DB;
 
 
 import android.util.Log;
@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class mongodb {
+public class Mongodb {
     String Original_data;
     String GPS;
 

@@ -1,37 +1,42 @@
-package com.example.drip_platform;
+package com.example.drip_platform.View.Fragment;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
+import com.example.drip_platform.DB.Mongodb;
+import com.example.drip_platform.ExtendComponent.Electrocardiogram;
+import com.example.drip_platform.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SecondActivity extends AppCompatActivity {
+public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private TextView Numericalvalue,Time,Patient_ID,Critical_text,Status;
     private ImageView image;
     private Button change_button;
@@ -42,13 +47,13 @@ public class SecondActivity extends AppCompatActivity {
     private DrawerLayout Drawer;
 
     private Toolbar toolbar;
-    private electrocardiogram elec;
+    private Electrocardiogram elec;
     private BottomNavigationView bottomNavigationView;
 
-    private Spinner spn;
+
     String[] spinner = new String[] {"剩餘劑量","脈搏","地圖"};
     private View google_map_view,heart;
-   // private google_map google_map_app = new google_map();
+
 
 
     private Timer timer;
@@ -58,65 +63,57 @@ public class SecondActivity extends AppCompatActivity {
     int message = 0;
     int Critical_value = -1;
 
-    private mongodb mongodb1 = new mongodb();
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    private com.google.android.gms.maps.GoogleMap mMap;
+
+    private float final_la = 0;
+    private float final_lo = 0;
+    private float last_la = 0;
+    private float last_lo = 0;
+
+    private Mongodb mongodb1 = new Mongodb();
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_preview, container, false);
 
-        Numericalvalue = (TextView)findViewById(R.id.Numericalvalue);
-        Time = (TextView)findViewById(R.id.Time);
-        image = (ImageView)findViewById(R.id.image);
-        Patient_ID=(TextView)findViewById(R.id.patient_ID);
+        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        try {
+            mapFragment.getMapAsync(this);
+        }catch (Exception e) {
+            System.out.println("error");
+        }
+        run_app();
 
-        Status = (TextView)findViewById(R.id.Status);
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        Numericalvalue = (TextView)view.findViewById(R.id.Numericalvalue);
+        Time = (TextView)view.findViewById(R.id.Time);
+        image = (ImageView)view.findViewById(R.id.image);
+        Patient_ID=(TextView)view.findViewById(R.id.patient_ID);
+
+        Status = (TextView)view.findViewById(R.id.Status);
 
 
-        spn = (Spinner)findViewById(R.id.spn);
-        ArrayAdapter<String> adapterBall = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,spinner);
-        adapterBall.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spn.setAdapter(adapterBall);
-        spn.setOnItemSelectedListener(spnPreferListener);
-        google_map_view = (View) findViewById(R.id.google_map_view);
-        heart = (View)findViewById(R.id.electrocardiogram);
 
-        Critical_text = (TextView)findViewById(R.id.Critical);
-        change_button = (Button)findViewById(R.id.change_button);
+
+        google_map_view = (View) view.findViewById(R.id.google_map_view);
+        heart = (View)view.findViewById(R.id.electrocardiogram);
+
+        Critical_text = (TextView)view.findViewById(R.id.Critical);
+        change_button = (Button)view.findViewById(R.id.change_button);
         change_button.setOnClickListener(change_button_listen);
 
 
 
-        bottomNavigationView.setOnNavigationItemSelectedListener((item) -> {
-            switch (item.getItemId()) {
 
-                case R.id.action_home:
-                    Intent intent3 =new Intent(SecondActivity.this,google_map.class);
-                    startActivity(intent3);
-                    finish();
-                    break;
-                case R.id.action_device:
-                    Intent intent =new Intent(SecondActivity.this,Equipment_Program.class);
-                    startActivity(intent);
-                    finish();
-                    break;
-                case R.id.action_personal:
-                    Intent intent2 =new Intent(SecondActivity.this, Personal_Page.class);
-                    startActivity(intent2);
-                    finish();
-                    break;
-
-            }
-            return true;
-        });
 
         Patient_ID.setText("UUID:test-0000-0001");
         image.setImageResource(R.drawable.drip);
-        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        toolbar=(Toolbar)view.findViewById(R.id.toolbar);
 
         start(elec);
-        initActionBar();
+        //  initActionBar();
 
         Numericalvalue.getText();
 
@@ -132,10 +129,28 @@ public class SecondActivity extends AppCompatActivity {
         };
         handler.postDelayed(runnable, 1000);
 
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public void start(View view) {
-        electrocardiogram elec = findViewById(R.id.electrocardiogram);
+        Electrocardiogram elec = getActivity().findViewById(R.id.electrocardiogram);
         showWaveData(elec);
 
     }
@@ -148,7 +163,7 @@ public class SecondActivity extends AppCompatActivity {
                     if (sel == spinner[2]){
                         google_map_view.setVisibility(View.VISIBLE);
                         try{
-
+                            run_app();
                         }catch (Exception e){
                             System.out.println("run_app_error");
                         }
@@ -169,7 +184,7 @@ public class SecondActivity extends AppCompatActivity {
     public void stop(View view) {
         stop();
     }
-
+/*
     private void initActionBar(){
 
         setSupportActionBar(toolbar);
@@ -188,7 +203,7 @@ public class SecondActivity extends AppCompatActivity {
 
         Drawer.addDrawerListener(mDrawerToggle);
 
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -199,33 +214,118 @@ public class SecondActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-/*
-    private String getData(String urlString,RequestQueue queue){
-        String resule="";
+    /*
+        private String getData(String urlString,RequestQueue queue){
+            String resule="";
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(urlString, null,
-                new Response.Listener<JSONObject>(){
-                    @Override
-                    public void onResponse(JSONObject response){
-                        Log.d("回傳結果","結果=" + response.toString());
-                        try{
-                            parseJSON(response);
-                        }catch(JSONException e){
-                            e.printStackTrace();
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(urlString, null,
+                    new Response.Listener<JSONObject>(){
+                        @Override
+                        public void onResponse(JSONObject response){
+                            Log.d("回傳結果","結果=" + response.toString());
+                            try{
+                                parseJSON(response);
+                            }catch(JSONException e){
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                },new Response.ErrorListener(){
-            public void onErrorResponse(VolleyError errror){
+                    },new Response.ErrorListener(){
+                public void onErrorResponse(VolleyError errror){
 
-                Log.e("回傳結果","結果=" + errror.toString());
+                    Log.e("回傳結果","結果=" + errror.toString());
+                }
+            });
+
+            queue.add(jsonObjectRequest);
+
+            return resule;
+        }*/
+    @Override
+
+    public void onMapReady(com.google.android.gms.maps.GoogleMap googleMap) {
+        mMap = googleMap;
+        get_GPS();
+        // Add a marker in Sydney and move the camera
+        Marker();
+    }
+
+    public void run_app(){
+
+        Runnable runnable = new Runnable() {
+            @Override
+
+            public void run() {
+                handler.postDelayed(this, 1000);
+                get_GPS();
+                if((last_lo != final_lo)||(last_la != final_la)){
+                    Marker();
+                }
             }
-        });
+        };
+        handler.postDelayed(runnable, 1000);
+    }
 
-        queue.add(jsonObjectRequest);
+    public void Marker(){
+        LatLng sydney = new LatLng(final_la, final_lo);
+        float zoom = 17;
+        try {
+            mMap.addMarker(new MarkerOptions()
+                    .position(sydney)
+                    .title("Marker in Sydney"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoom));
+        }catch (Exception e) {
+            System.out.println("mapIsnull");
+        }
+    }
 
-        return resule;
-    }*/
 
+    public void get_GPS(){
+        String [] gps = mongodb1.gps();
+        System.out.println("gps=" + gps);
+
+        last_la = final_la;
+        last_lo = final_lo;
+
+        try {
+            String latitude = gps[4];
+            String longitude = gps[9];
+
+            //小數點的位置
+            int px = latitude.indexOf('.');
+            int py = longitude.indexOf('.');
+
+            String[] a1 = latitude.split("");
+            String[] a2 = longitude.split("");
+
+            //前位數
+            String b1 = a1[0]+a1[1];
+            float bf1 =  Float.parseFloat(b1) ;
+            String b2 = a2[0]+a2[1]+a2[2];
+            float bf2 =  Float.parseFloat(b2) ;
+
+            //latitude處理------------------------------------
+            String c = "";
+            for(int i=px-2;i<latitude.length();i++){
+                c = c + a1[i];
+            }
+            float d =  Float.parseFloat(c) ;
+            float n = d / 60;
+            final_la = bf1+n;
+            //longitude處理-----------------------------------
+            c = "";
+            for(int i=py-2;i<longitude.length();i++){
+                c = c + a2[i];
+            }
+            d =  Float.parseFloat(c) ;
+            n = d / 60;
+            final_lo = bf2+n;
+
+        }catch (Exception e) {
+            System.out.println("GPS_catch_error");
+        }
+
+    }
     public void Number_value(){
         String [] data = mongodb1.show();
 
@@ -237,7 +337,7 @@ public class SecondActivity extends AppCompatActivity {
             N = "數值 " + data[8];
             num = N;
 
-            AlertDialog.Builder adbATM = new AlertDialog.Builder(SecondActivity.this);
+            AlertDialog.Builder adbATM = new AlertDialog.Builder(getContext());
             adbATM.setTitle("警告");
             adbATM.setIcon(R.mipmap.ic_launcher);
             adbATM.setMessage("重量低於規定值");
@@ -270,7 +370,7 @@ public class SecondActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(SecondActivity.this);
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                     View v = getLayoutInflater().inflate(R.layout.set_custom_dialog_layout_with_button, null);
                     alertDialog.setView(v);
                     Button btOK = v.findViewById(R.id.button_ok);
@@ -288,14 +388,14 @@ public class SecondActivity extends AppCompatActivity {
                                 message = 0;
 
 
-                                AlertDialog.Builder twoDialog = new AlertDialog.Builder(SecondActivity.this);
+                                AlertDialog.Builder twoDialog = new AlertDialog.Builder(getContext());
                                 twoDialog.setTitle("設定完成");
                                 twoDialog.setPositiveButton("確定", ((dialog1, which) -> {
                                 }));
                                 twoDialog.show();
                             }
                             else{
-                                AlertDialog.Builder twoDialog = new AlertDialog.Builder(SecondActivity.this);
+                                AlertDialog.Builder twoDialog = new AlertDialog.Builder(getContext());
                                 twoDialog.setTitle("數值不得超過99999");
                                 twoDialog.setPositiveButton("確定", ((dialog1, which) -> {
                                 }));
@@ -306,7 +406,7 @@ public class SecondActivity extends AppCompatActivity {
 
                         }
                         else{
-                            AlertDialog.Builder twoDialog = new AlertDialog.Builder(SecondActivity.this);
+                            AlertDialog.Builder twoDialog = new AlertDialog.Builder(getContext());
                             twoDialog.setTitle("未輸入數值請重新輸入");
                             twoDialog.setPositiveButton("確定", ((dialog1, which) -> {
                             }));
@@ -323,7 +423,7 @@ public class SecondActivity extends AppCompatActivity {
                     }));
                 }
             };
-    public void showWaveData(final electrocardiogram elec){
+    public void showWaveData(final Electrocardiogram elec){
         timer = new Timer();
         timerTask = new TimerTask() {
 
@@ -332,7 +432,7 @@ public class SecondActivity extends AppCompatActivity {
                 float random = new Random().nextFloat()*(30f)-20f;
                 String[] tokens = num.split(":");
                 //elec.showLine(new Random().nextFloat()*(30f)-20f);
-                elec.showLine(Float.parseFloat(tokens[1]));
+//                elec.showLine(Float.parseFloat(tokens[1]));
             }
         };
 

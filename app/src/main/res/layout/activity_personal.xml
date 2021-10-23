@@ -8,6 +8,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
             android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue"
+            android:minHeight="?attr/actionBarSize" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="Account"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -15,18 +32,24 @@
             android:layout_weight="1">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="帳戶訊息"
-                android:textSize="50dp"
-                android:gravity="center" />
+
+              />
+
 
             <ImageView
                 android:id="@+id/image2"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:background="@color/blue" />
+                android:src="@drawable/nurse"
+               />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -34,15 +57,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="使用者："
-                    android:textSize="40dp"/>
+                    android:background="@color/green"
+                    android:textColor="@color/w"
+                    android:text="name："
+                    android:textSize="30dp"/>
 
                 <TextView
                     android:id="@+id/uesr_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="XXX"
-                    android:textSize="40dp"/>
+                    android:background="@color/green"
+                    android:textColor="@color/w"
+                    android:text="護理師A"
+                    android:textSize="30dp"/>
 
             </LinearLayout>
 
@@ -53,17 +80,37 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="權限："
-                    android:textSize="40dp"/>
+                    android:text="Authority："
+                    android:textSize="30dp"/>
 
                 <TextView
                     android:id="@+id/uesr_room"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="XXX"
-                    android:textSize="40dp"/>
+                    android:text="護理師"
+                    android:textSize="30dp"/>
+
+
+
+
 
             </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                />
+
+
+            <Button
+                android:id="@+id/signout_button"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorlight"
+                android:textColor="@color/white"
+                android:text="Sign out"
+                android:textSize="15dp"/>
+
 
         </LinearLayout>
 

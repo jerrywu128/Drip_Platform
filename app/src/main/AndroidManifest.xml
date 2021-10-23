@@ -43,17 +43,19 @@
             android:required="false" />
 
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".View.Activity.LogoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity" />
-        <activity android:name=".Equipment_Program" />
-        <activity android:name=".Personal_Page" />
-        <activity android:name=".google_map" />
+        <activity android:name=".View.Activity.PreviewActivity" />
+        <activity android:name=".View.Activity.EquipmentInfoActivity" />
+        <activity android:name=".View.Activity.PersonalActivity" />
+        <activity android:name=".View.Activity.GoogleMapActivity" />
+        <activity android:name=".View.Activity.LoginActivity" />
+        <activity android:name=".View.Activity.LaunchActivity" />
     </application>
 
 </manifest>
