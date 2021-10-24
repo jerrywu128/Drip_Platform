@@ -47,7 +47,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private DrawerLayout Drawer;
 
     private Toolbar toolbar;
-    private Electrocardiogram elec;
+
     private BottomNavigationView bottomNavigationView;
 
 
@@ -70,7 +70,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private float final_lo = 0;
     private float last_la = 0;
     private float last_lo = 0;
-
+    private Electrocardiogram elec;
     private Mongodb mongodb1 = new Mongodb();
 
     @Override
@@ -111,8 +111,9 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
         Patient_ID.setText("UUID:test-0000-0001");
         image.setImageResource(R.drawable.drip);
         toolbar=(Toolbar)view.findViewById(R.id.toolbar);
+        elec = view.findViewById(R.id.electrocardiogram);
+        showWaveData(elec);
 
-        start(elec);
         //  initActionBar();
 
         Numericalvalue.getText();
@@ -149,11 +150,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
         super.onDestroy();
     }
 
-    public void start(View view) {
-        Electrocardiogram elec = getActivity().findViewById(R.id.electrocardiogram);
-        showWaveData(elec);
 
-    }
 
     private Spinner.OnItemSelectedListener spnPreferListener =
             new  Spinner.OnItemSelectedListener(){
@@ -432,7 +429,11 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
                 float random = new Random().nextFloat()*(30f)-20f;
                 String[] tokens = num.split(":");
                 //elec.showLine(new Random().nextFloat()*(30f)-20f);
-//                elec.showLine(Float.parseFloat(tokens[1]));
+                try {
+                    elec.showLine(Float.parseFloat(tokens[1]));
+                }catch (Exception e){
+                    System.out.println("error show line");
+                }
             }
         };
 
