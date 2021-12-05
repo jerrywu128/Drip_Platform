@@ -14,5 +14,12 @@
         <item name="colorPrimary">@color/blue</item>
     </style>
 
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:background">@color/blue</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="windowMinWidthMajor">80%</item>
+        <item name="windowMinWidthMinor">80%</item>
+    </style>
+
 </resources>
 

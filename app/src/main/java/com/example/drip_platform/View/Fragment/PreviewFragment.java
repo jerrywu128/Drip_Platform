@@ -2,6 +2,7 @@ package com.example.drip_platform.View.Fragment;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -9,12 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -26,6 +29,7 @@ import com.example.drip_platform.DB.Mongodb;
 import com.example.drip_platform.ExtendComponent.Electrocardiogram;
 import com.example.drip_platform.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -45,13 +49,13 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private ActionBar actionBar;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout Drawer;
-
+    private MapView mapView;
     private Toolbar toolbar;
 
     private BottomNavigationView bottomNavigationView;
+    private SupportMapFragment mapFragment;
 
-
-    String[] spinner = new String[] {"剩餘劑量","脈搏","地圖"};
+    String[] spinner = new String[] {"藥劑剩餘劑量","脈搏心率(請患者輕壓傳感器)","所在位置"};
     private View google_map_view,heart;
 
 
@@ -59,11 +63,13 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private Timer timer;
     private TimerTask timerTask;
     String num = "0:0";
+    String Heartbeat_pulse_value = "0";
 
     int message = 0;
     int Critical_value = -1;
 
-
+    private Spinner spn;
+    private int Weight_or_heartbeat = 0; //0=重量  1=心跳脈搏
     private com.google.android.gms.maps.GoogleMap mMap;
 
     private float final_la = 0;
@@ -73,19 +79,20 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private Electrocardiogram elec;
     private Mongodb mongodb1 = new Mongodb();
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_preview, container, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        try {
-            mapFragment.getMapAsync(this);
-        }catch (Exception e) {
-            System.out.println("error");
-        }
-        run_app();
+        mapView = (MapView) view.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);
+
+
+
+        getlocation();
 
         Numericalvalue = (TextView)view.findViewById(R.id.Numericalvalue);
         Time = (TextView)view.findViewById(R.id.Time);
@@ -118,13 +125,23 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
 
         Numericalvalue.getText();
 
+        spn = (Spinner)view.findViewById(R.id.spn);
+        ArrayAdapter<String> adapterBall = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item,spinner);
+        adapterBall.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spn.setAdapter(adapterBall);
+        spn.setOnItemSelectedListener(spnPreferListener);
 
         Runnable runnable = new Runnable() {
             @Override
 
             public void run() {
                 handler.postDelayed(this, 1000);
-                Number_value();
+                if(Weight_or_heartbeat == 0){
+                    Number_value();
+                }else if(Weight_or_heartbeat == 1){
+                    Pulse();
+                }
                 //getData(U,queue);
             }
         };
@@ -160,7 +177,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
                     if (sel == spinner[2]){
                         google_map_view.setVisibility(View.VISIBLE);
                         try{
-                            run_app();
+                            getlocation();
                         }catch (Exception e){
                             System.out.println("run_app_error");
                         }
@@ -169,6 +186,12 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
                     }else{
                         google_map_view.setVisibility(View.GONE);
                         heart.setVisibility(View.VISIBLE);
+                    }
+
+                    if(sel==spinner[0]){
+                        Weight_or_heartbeat = 0;
+                    }else if (sel == spinner[1]){
+                        Weight_or_heartbeat = 1;
                     }
                 }
 
@@ -238,22 +261,21 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
             return resule;
         }*/
     @Override
-
     public void onMapReady(com.google.android.gms.maps.GoogleMap googleMap) {
         mMap = googleMap;
-        get_GPS();
+        get_GPSinfo();
         // Add a marker in Sydney and move the camera
         Marker();
     }
 
-    public void run_app(){
+    public void getlocation(){
 
         Runnable runnable = new Runnable() {
             @Override
 
             public void run() {
                 handler.postDelayed(this, 1000);
-                get_GPS();
+                get_GPSinfo();
                 if((last_lo != final_lo)||(last_la != final_la)){
                     Marker();
                 }
@@ -277,7 +299,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     }
 
 
-    public void get_GPS(){
+    public void get_GPSinfo(){
         String [] gps = mongodb1.gps();
         System.out.println("gps=" + gps);
 
@@ -296,16 +318,26 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
             String[] a2 = longitude.split("");
 
             //前位數
-            String b1 = a1[0]+a1[1];
-            float bf1 =  Float.parseFloat(b1) ;
-            String b2 = a2[0]+a2[1]+a2[2];
-            float bf2 =  Float.parseFloat(b2) ;
+            float bf1 = (float) Math.floor(Float.parseFloat(latitude)/100);
+            float bf2 = (float) Math.floor(Float.parseFloat(longitude)/100) ;
+
+            //System.out.println("bf1="+bf1);
+            //System.out.println("bf2="+bf2);
 
             //latitude處理------------------------------------
             String c = "";
             for(int i=px-2;i<latitude.length();i++){
                 c = c + a1[i];
             }
+                //例外處理---------------
+                if(c.indexOf('.')!=2){
+                    c = "";
+                    for(int i=px-1;i<latitude.length();i++){
+                        c = c + a1[i];
+                    }
+                }
+                //---------------------
+
             float d =  Float.parseFloat(c) ;
             float n = d / 60;
             final_la = bf1+n;
@@ -314,6 +346,16 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
             for(int i=py-2;i<longitude.length();i++){
                 c = c + a2[i];
             }
+                //例外處理---------------
+                if(c.indexOf('.')!=2){
+                    c = "";
+                    for(int i=py-1;i<latitude.length();i++){
+                        c = c + a2[i];
+                    }
+                }
+                //---------------------
+
+            //System.out.println("C="+c);
             d =  Float.parseFloat(c) ;
             n = d / 60;
             final_lo = bf2+n;
@@ -321,6 +363,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
         }catch (Exception e) {
             System.out.println("GPS_catch_error");
         }
+        //System.out.println("gget"+final_la+"tt"+final_lo);
 
     }
     public void Number_value(){
@@ -336,7 +379,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
 
             AlertDialog.Builder adbATM = new AlertDialog.Builder(getContext());
             adbATM.setTitle("警告");
-            adbATM.setIcon(R.mipmap.ic_launcher);
+            adbATM.setIcon(R.drawable.sign);
             adbATM.setMessage("重量低於規定值");
             adbATM.setPositiveButton("確定", new DialogInterface.OnClickListener() {
                 @Override
@@ -360,6 +403,17 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
         }
         Time.setText(T);
         Numericalvalue.setText(N);
+    }
+
+    public void Pulse(){
+        String [] pulse = mongodb1.pulse();
+        try{
+            Heartbeat_pulse_value = pulse[4];
+            Numericalvalue.setText(pulse[4]);
+            Time.setText("BPM:");
+        }catch (Exception e){
+            System.out.println("Pulse_error");
+        }
     }
 
     private Button.OnClickListener change_button_listen =
@@ -430,13 +484,20 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
                 String[] tokens = num.split(":");
                 //elec.showLine(new Random().nextFloat()*(30f)-20f);
                 try {
-                    elec.showLine(Float.parseFloat(tokens[1]));
+                    if(Weight_or_heartbeat == 0){
+                        elec.showLine(Float.parseFloat(tokens[1]),Weight_or_heartbeat);
+
+                        //System.out.println("Weight_or_heartbeat == 0");
+                    }else if(Weight_or_heartbeat == 1){
+                        elec.showLine(Float.parseFloat(Heartbeat_pulse_value),Weight_or_heartbeat);
+                        //elec.showLine(new Random().nextFloat()*(40f)-20f,Weight_or_heartbeat);
+                        //System.out.println("Weight_or_heartbeat == 1");
+                    }
                 }catch (Exception e){
                     System.out.println("error show line");
                 }
             }
         };
-
 
         //500表示调用schedule方法后等待500ms后调用run方法，50表示以后调用run方法的时间间隔
         timer.schedule(timerTask,500,50);

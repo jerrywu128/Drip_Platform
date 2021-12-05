@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Electrocardiogram extends View {
     private float mWidth = 0,mHeight = 0;//自身大小
-    private int mBackGroundColor = Color.BLACK;
+    private int mBackGroundColor_hart = Color.BLACK;
     private Paint mLinePaint;//画笔
     private Paint mWavePaint;//心电图的折现
     private Path mPath;//心电图的路径
@@ -24,9 +24,9 @@ public class Electrocardiogram extends View {
     private int row;//背景网格的行数和列数
 
     //心电
-    private float MAX_VALUE = 20;
+    private float MAX_VALUE = 100;
     private float WAVE_LINE_STROKE_WIDTH = 2;
-    private int mWaveLineColor = Color.parseColor("#EE4000");//波形颜色
+    private int mWaveLineColor_hart = Color.parseColor("#EE4000");//波形颜色
     private  float nowX,nowY;//目前的xy坐标
 
     //网格
@@ -34,8 +34,16 @@ public class Electrocardiogram extends View {
     private final int GRID_BIG_WIDTH = 50;//每一个大网格的宽度和高度,包括线
     private int xSmallNum,ySmallNum,xBigNum,yBigNum;//小网格的横格，竖格，大网格的横格，竖格数量
     private final int GRID_LINE_WIDTH=2;//网格的线的宽度
-    private int mWaveSmallLineColor = Color.parseColor("#092100");//小网格颜色
-    private int mWaveBigLineColor = Color.parseColor("#1b4200");//小网格颜色
+    private int mWaveSmallLineColor_hart = Color.parseColor("#092100");//小网格颜色
+    private int mWaveBigLineColor_hart = Color.parseColor("#1b4200");//小网格颜色
+
+    private int mBackGroundColor = Color.WHITE;
+    private int mWaveSmallLineColor = Color.parseColor("#FFFFFF");
+    private int mWaveBigLineColor = Color.parseColor("#000000");
+    private int mWaveLineColor = Color.parseColor("#0062ff");//波形颜色
+
+
+    private int Weight_or_heartbeat = 0;
 
     public Electrocardiogram(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -72,7 +80,6 @@ public class Electrocardiogram extends View {
         mWavePaint.setAntiAlias(true);//抗锯齿效果
 
         mPath = new Path();
-
     }
 
     @Override
@@ -94,10 +101,19 @@ public class Electrocardiogram extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //绘制网格
-        drawGrid(canvas);
-        //绘制波形
-        drawWaveLine(canvas);
+        if(Weight_or_heartbeat == 0){
+            //绘制网格
+            drawGrid(canvas);
+            //绘制波形
+            drawWaveLine(canvas);
+            mWavePaint.setColor(mWaveLineColor);
+            mWavePaint.setStrokeWidth(10);
+        }else if(Weight_or_heartbeat == 1){
+            drawGrid_hart(canvas);
+            drawWaveLine_heart(canvas);
+            mWavePaint.setColor(mWaveLineColor_hart);
+            mWavePaint.setStrokeWidth(WAVE_LINE_STROKE_WIDTH);
+        }
     }
 
     /**
@@ -114,14 +130,40 @@ public class Electrocardiogram extends View {
         for (int i = 0;i<refreshList.size();i++){
             nowX = i* GRID_SMALL_WIDTH;
             float dataValue = (float) refreshList.get(i);
-            if(dataValue <= mHeight*0.1f){
-                    dataValue = mHeight * 0.1f;
+            if(dataValue <= mHeight*0.25f){
+                    dataValue = mHeight * 0.25f;
             }else if(dataValue > mHeight){
                 dataValue = mHeight * 0.8f;
             }
             //nowY = mHeight/2 + dataValue *(mHeight/(MAX_VALUE*2));
             nowY = mHeight - dataValue;
             mPath.lineTo(nowX,nowY);
+        }
+        canvas.drawPath(mPath, mWavePaint);
+        if(refreshList.size()>row){
+            refreshList.remove(0);
+        }
+    }
+
+    private void drawWaveLine_heart(Canvas canvas) {
+        if(null == refreshList || refreshList.size()<=0){
+            return;
+        }
+        mPath.reset();
+        mPath.moveTo(0f,mHeight*0.1f);
+        for (int i = 0;i<refreshList.size();i++){
+            nowX = i* GRID_SMALL_WIDTH;
+            float dataValue = (float) refreshList.get(i);
+            if(dataValue>0){
+                if(dataValue > MAX_VALUE){
+                    dataValue = MAX_VALUE * 0.9f;
+                }
+            }
+            //nowY = mHeight/2 + dataValue *(mHeight/(MAX_VALUE*2));
+            nowY = mHeight * (dataValue * 0.01f);
+            mPath.lineTo(nowX,nowY);
+            //System.out.println("datavalue:"+dataValue);
+            //System.out.println("nowY:"+nowY);
         }
         canvas.drawPath(mPath, mWavePaint);
         if(refreshList.size()>row){
@@ -158,7 +200,38 @@ public class Electrocardiogram extends View {
                     i*GRID_BIG_WIDTH,mHeight, mLinePaint);
         }
     }
-    public void showLine(float line) {
+
+    private void drawGrid_hart(Canvas canvas){
+
+        canvas.drawColor(mBackGroundColor_hart);
+        //画小网格
+        mLinePaint.setColor(mWaveSmallLineColor_hart);
+        //画横线
+        for(int i = 0;i < xSmallNum + 1;i++){
+            canvas.drawLine(0,i*GRID_SMALL_WIDTH,
+                    mWidth, i*GRID_SMALL_WIDTH, mLinePaint);
+        }
+        //画竖线
+        for(int i = 0;i < ySmallNum+1;i++){
+            canvas.drawLine(i*GRID_SMALL_WIDTH,0,
+                    i*GRID_SMALL_WIDTH,mHeight, mLinePaint);
+        }
+        //画大网格
+        mLinePaint.setColor(mWaveBigLineColor_hart);
+        //画横线
+        for(int i = 0;i < xBigNum + 1;i++){
+            canvas.drawLine(0,i*GRID_BIG_WIDTH,
+                    mWidth, i*GRID_BIG_WIDTH, mLinePaint);
+        }
+        //画竖线
+        for(int i = 0;i < yBigNum+1;i++){
+            canvas.drawLine(i*GRID_BIG_WIDTH,0,
+                    i*GRID_BIG_WIDTH,mHeight, mLinePaint);
+        }
+    }
+
+    public void showLine(float line, int Weight_or_heart) {
+        Weight_or_heartbeat = Weight_or_heart;
         refreshList.add(line);
         postInvalidate();
     }
@@ -166,6 +239,8 @@ public class Electrocardiogram extends View {
     public void resetCanavas() {
         refreshList.clear();
     }
+
+
 
 
 }

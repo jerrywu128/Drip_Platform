@@ -37,7 +37,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
+//old activity
 public class PreviewActivity extends AppCompatActivity  implements OnMapReadyCallback {
     private TextView Numericalvalue,Time,Patient_ID,Critical_text,Status;
     private ImageView image;
@@ -438,7 +438,7 @@ public void onMapReady(com.google.android.gms.maps.GoogleMap googleMap) {
                 float random = new Random().nextFloat()*(30f)-20f;
                 String[] tokens = num.split(":");
                 //elec.showLine(new Random().nextFloat()*(30f)-20f);
-                elec.showLine(Float.parseFloat(tokens[1]));
+                elec.showLine(Float.parseFloat(tokens[1]),0);
             }
         };
 

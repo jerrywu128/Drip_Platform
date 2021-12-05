@@ -46,15 +46,7 @@
             android:orientation="horizontal"
             android:background="@color/gray"
             >
-                <Spinner
-                    android:id="@+id/spn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/blue" />
 
                 <com.google.android.material.bottomnavigation.BottomNavigationView
                     android:id="@+id/navigation"
@@ -67,7 +59,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:menu="@menu/bottom_navigation_view"
-                    android:theme="@style/bottom_button"/>
+                    android:theme="@style/bottom_button"
+                    android:visibility="visible"/>
 
         </LinearLayout>
     </RelativeLayout>

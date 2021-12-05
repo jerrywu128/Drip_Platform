@@ -3,7 +3,6 @@ package com.example.drip_platform.View.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,7 +28,7 @@ public class LaunchActivity extends FragmentActivity {
     private PersonalFragment personalFragment;
     private BottomNavigationView bottomNavigationView;
     private final List<Fragment> mFragmentList = new ArrayList<>();
-    private Spinner spn;
+
     private TextView toolbar_text;
     private int lastShowFragment = 0;
     String[] spinner = new String[] {"剩餘劑量","脈搏","地圖"};
@@ -40,11 +39,7 @@ public class LaunchActivity extends FragmentActivity {
         setContentView(R.layout.activity_launch);
 
 
-        spn = (Spinner)findViewById(R.id.spn);
-        ArrayAdapter<String> adapterBall = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,spinner);
-        adapterBall.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spn.setAdapter(adapterBall);
-        spn.setOnItemSelectedListener(spnPreferListener);
+
         toolbar_text = (TextView) findViewById(R.id.toolbar_text) ;
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
 
@@ -154,5 +149,5 @@ public class LaunchActivity extends FragmentActivity {
                 public void onNothingSelected(AdapterView<?> parent){
 
                 }
-            };
+    };
 }

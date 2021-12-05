@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/input_account"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/input_account"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/white"
+        >
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/input_password"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/input_password"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/white"
+        android:inputType="textPassword"
+        >
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/check_password"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/check_password"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/white"
+        android:inputType="textPassword"
+        >
+
+    </EditText>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
