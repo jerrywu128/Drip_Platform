@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.drip_platform.ExtendComponent.CreateUser;
 import com.example.drip_platform.R;
 
+import java.net.MalformedURLException;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText ET_account,ET_password;
@@ -79,10 +81,14 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         else{
                               if(i_password.equals(c_password)){
-                                  if(CreateUser.create(account,i_password)){
-                                      Toast.makeText(LoginActivity.this,R.string.create_cucess,Toast.LENGTH_LONG).show();
-                                  }else{
-                                      Toast.makeText(LoginActivity.this,R.string.create_fail,Toast.LENGTH_LONG).show();
+                                  try {
+                                      if(CreateUser.create(account,i_password)){
+                                          Toast.makeText(LoginActivity.this,R.string.create_cucess,Toast.LENGTH_LONG).show();
+                                      }else{
+                                          Toast.makeText(LoginActivity.this,R.string.create_fail,Toast.LENGTH_LONG).show();
+                                      }
+                                  } catch (MalformedURLException e) {
+                                      e.printStackTrace();
                                   }
                               }else{
                                   Toast.makeText(LoginActivity.this,R.string.password_different,Toast.LENGTH_LONG).show();
