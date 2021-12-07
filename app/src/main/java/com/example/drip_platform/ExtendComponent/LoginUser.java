@@ -2,10 +2,6 @@ package com.example.drip_platform.ExtendComponent;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Looper;
-import android.widget.Toast;
-
-import com.example.drip_platform.R;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,9 +16,10 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 
-public class CreateUser extends AsyncTask<String,Void,String> {
+public class LoginUser extends AsyncTask<String,Void,String> {
+    static int a = 0;
     public static OkHttpClient client = new OkHttpClient();
-    public static void create(String account, String password, Context L) throws MalformedURLException {
+    public static boolean login(String account, String password, Context L) throws MalformedURLException {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -30,7 +27,7 @@ public class CreateUser extends AsyncTask<String,Void,String> {
                 try {
                     HttpURLConnection connection;
                     OutputStream outputStream;
-                    URL url = new URL("http://203.64.128.65:81/create_user");
+                    URL url = new URL("http://203.64.128.65:81/login");
                     connection = (HttpURLConnection) url.openConnection();
 
                     connection.setUseCaches(false);
@@ -71,28 +68,36 @@ public class CreateUser extends AsyncTask<String,Void,String> {
                         String line = null;
                         while ((line = reader.readLine()) != null) {
                             response.add(line);
-
                         }
+
+                        System.out.println("response = "+response.toString().indexOf("sucess"));
+                        a = response.toString().indexOf("sucess");
+
                         reader.close();
                         connection.disconnect();
                     } else {
                         System.out.println("ooooo");
                     }
-                        Looper.prepare();
-                        Toast.makeText(L, R.string.create_cucess,Toast.LENGTH_LONG).show();
-                        Looper.loop();
-
                 } catch (Exception e) {
                     System.out.println("URL_ERROR");
-                    Looper.prepare();
-                    Toast.makeText(L,R.string.create_fail,Toast.LENGTH_LONG).show();
-                    Looper.loop();
                 }
             }});
         thread.start();
 
-    }
+        try{
+            // delay 1 second
+            Thread.sleep(100);
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        }
+        if(a<0){
+            return false;
+        }else {
+            return true;
+        }
 
+
+    }
 
     @Override
     protected String doInBackground(String... strings) {
