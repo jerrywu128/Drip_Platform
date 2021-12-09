@@ -1,6 +1,8 @@
 package com.example.drip_platform.ExtendComponent;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -17,8 +19,14 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 
 public class LoginUser extends AsyncTask<String,Void,String> {
-    static int a = 0;
+    static int LoginStatus = 0;
+    private static Activity activity;
     public static OkHttpClient client = new OkHttpClient();
+
+    public LoginUser(Activity activity){
+        this.activity = activity;
+    }
+
     public static boolean login(String account, String password, Context L) throws MalformedURLException {
 
         Thread thread = new Thread(new Runnable() {
@@ -71,7 +79,8 @@ public class LoginUser extends AsyncTask<String,Void,String> {
                         }
 
                         System.out.println("response = "+response.toString().indexOf("sucess"));
-                        a = response.toString().indexOf("sucess");
+                        LoginStatus = response.toString().indexOf("sucess");
+                        LoginUser.writeLoginStatus(LoginStatus);
 
                         reader.close();
                         connection.disconnect();
@@ -90,13 +99,22 @@ public class LoginUser extends AsyncTask<String,Void,String> {
         } catch(InterruptedException e){
             e.printStackTrace();
         }
-        if(a<0){
+        if(LoginStatus <0){
             return false;
         }else {
             return true;
         }
 
 
+    }
+
+    public static void writeLoginStatus(int status){
+        if(status>=0){
+            SharedPreferences pref = activity.getSharedPreferences("myActivityName", 0);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean("isLogin", true);
+            editor.commit();
+        }
     }
 
     @Override

@@ -24,11 +24,13 @@ public class LoginActivity extends AppCompatActivity {
     private EditText ET_account,ET_password;
     private Button BT_login,BT_signUp;
     private ActionBar actionBar;
+    private LoginUser loginUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        loginUser = new LoginUser(this);
         ET_account = (EditText) findViewById(R.id.account_number);
         ET_password = (EditText) findViewById(R.id.Password);
         BT_signUp = (Button) findViewById(R.id.sign_up);
@@ -44,9 +46,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    if (LoginUser.login(ET_account.getText().toString(),ET_password.getText().toString(),LoginActivity.this)) {
+                    if (loginUser.login(ET_account.getText().toString(),ET_password.getText().toString(),LoginActivity.this)) {
                         Intent intent = new Intent(LoginActivity.this, LaunchActivity.class);
                         startActivity(intent);
+                        finish();
                     } else {
                         Toast.makeText(LoginActivity.this, R.string.input_error, Toast.LENGTH_LONG).show();
                     }
