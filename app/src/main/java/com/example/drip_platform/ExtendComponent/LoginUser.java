@@ -99,9 +99,11 @@ public class LoginUser extends AsyncTask<String,Void,String> {
         } catch(InterruptedException e){
             e.printStackTrace();
         }
-        if(LoginStatus <0){
+        if(LoginStatus <=0){
+            System.out.println("this"+LoginStatus);
             return false;
         }else {
+            System.out.println("thise"+LoginStatus);
             return true;
         }
 
