@@ -35,7 +35,8 @@ public class LoginUser extends AsyncTask<String,Void,String> {
                 try {
                     HttpURLConnection connection;
                     OutputStream outputStream;
-                    URL url = new URL("http://203.64.128.65:81/login");
+                    //URL url = new URL("http://203.64.128.65:81/login");
+                    URL url = new URL("https://8504-59-120-123-50.jp.ngrok.io/login");
                     connection = (HttpURLConnection) url.openConnection();
 
                     connection.setUseCaches(false);

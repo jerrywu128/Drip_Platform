@@ -86,8 +86,8 @@ public class Mongodb {
                 Original_data = "";
                 String decode;
                 try {
-                    URL u = new URL("http://203.64.128.65/data_list");
-
+                    //URL u = new URL("http://203.64.128.65/data_list");
+                    URL u = new URL("https://2df1-59-120-123-50.jp.ngrok.io/data_list");
                     HttpURLConnection hc = (HttpURLConnection) u.openConnection();
                    try{
                        //hc.setRequestMethod("GET");
@@ -120,8 +120,8 @@ public class Mongodb {
                 GPS = "";
                 String decode;
                 try {
-                    URL u = new URL("http://203.64.128.65/location_list");
-
+                    //URL u = new URL("http://203.64.128.65/location_list");
+                    URL u = new URL("https://2df1-59-120-123-50.jp.ngrok.io/location_list");
                     HttpURLConnection hc = (HttpURLConnection) u.openConnection();
                     try{
                         //hc.setRequestMethod("GET");
@@ -153,8 +153,8 @@ public class Mongodb {
                 Pulse = "";
                 String decode;
                 try {
-                    URL u = new URL("http://203.64.128.65/pulse_list");
-
+                    //URL u = new URL("http://203.64.128.65/pulse_list");
+                    URL u = new URL("https://2df1-59-120-123-50.jp.ngrok.io/pulse_list");
                     HttpURLConnection hc = (HttpURLConnection) u.openConnection();
                     try{
                         //hc.setRequestMethod("GET");
@@ -186,7 +186,7 @@ public class Mongodb {
             public void run() {
                 JSONArray decode;
                 try {
-                    URL u = new URL("http://203.64.128.65/location_list");
+                    URL u = new URL("https://203.64.128.65/location_list");
                     HttpURLConnection hc = (HttpURLConnection) u.openConnection();
                     InputStream is = hc.getInputStream();
                     BufferedReader in = new BufferedReader(new InputStreamReader(is));
