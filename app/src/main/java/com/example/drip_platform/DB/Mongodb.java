@@ -1,7 +1,10 @@
 package com.example.drip_platform.DB;
 
 
+import android.app.Activity;
 import android.util.Log;
+
+import com.example.drip_platform.R;
 
 import org.json.JSONArray;
 
@@ -18,7 +21,13 @@ public class Mongodb {
     String GPS;
     String Pulse;
 
+    Activity activity;
+
     ArrayList<HashMap<String,String>> arrayList = new ArrayList<>();
+
+    public Mongodb (Activity activity){
+        this.activity = activity;
+    }
 
     public String [] show () {
         GetURLData();
@@ -87,7 +96,7 @@ public class Mongodb {
                 String decode;
                 try {
                     //URL u = new URL("http://203.64.128.65/data_list");
-                    URL u = new URL("https://2df1-59-120-123-50.jp.ngrok.io/data_list");
+                    URL u = new URL("https://"+activity.getResources().getString(R.string.rpi_server)+"data_list");
                     HttpURLConnection hc = (HttpURLConnection) u.openConnection();
                    try{
                        //hc.setRequestMethod("GET");
@@ -121,7 +130,8 @@ public class Mongodb {
                 String decode;
                 try {
                     //URL u = new URL("http://203.64.128.65/location_list");
-                    URL u = new URL("https://2df1-59-120-123-50.jp.ngrok.io/location_list");
+
+                    URL u = new URL("https://"+activity.getResources().getString(R.string.rpi_server)+"location_list");
                     HttpURLConnection hc = (HttpURLConnection) u.openConnection();
                     try{
                         //hc.setRequestMethod("GET");
@@ -154,7 +164,7 @@ public class Mongodb {
                 String decode;
                 try {
                     //URL u = new URL("http://203.64.128.65/pulse_list");
-                    URL u = new URL("https://2df1-59-120-123-50.jp.ngrok.io/pulse_list");
+                    URL u = new URL("https://"+activity.getResources().getString(R.string.rpi_server)+"pulse_list");
                     HttpURLConnection hc = (HttpURLConnection) u.openConnection();
                     try{
                         //hc.setRequestMethod("GET");

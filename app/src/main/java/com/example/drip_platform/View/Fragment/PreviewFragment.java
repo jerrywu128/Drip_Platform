@@ -1,5 +1,7 @@
 package com.example.drip_platform.View.Fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
@@ -41,6 +43,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
+    private Activity activity;
+    private Context context;
     private TextView Numericalvalue,Time,Patient_ID,Critical_text,Status;
     private ImageView image;
     private Button change_button;
@@ -77,7 +81,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private float last_la = 0;
     private float last_lo = 0;
     private Electrocardiogram elec;
-    private Mongodb mongodb1 = new Mongodb();
+    private Mongodb mongodb1 ;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -149,7 +153,13 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
 
         return view;
     }
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        activity = getActivity();
+        this.context = context;
+        mongodb1 = new Mongodb(activity);
+    }
     @Override
     public void onResume() {
         super.onResume();

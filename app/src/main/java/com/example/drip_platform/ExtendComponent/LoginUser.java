@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
+import com.example.drip_platform.R;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -36,7 +38,7 @@ public class LoginUser extends AsyncTask<String,Void,String> {
                     HttpURLConnection connection;
                     OutputStream outputStream;
                     //URL url = new URL("http://203.64.128.65:81/login");
-                    URL url = new URL("https://8504-59-120-123-50.jp.ngrok.io/login");
+                    URL url = new URL("https://"+L.getResources().getString(R.string.login_server)+"login");
                     connection = (HttpURLConnection) url.openConnection();
 
                     connection.setUseCaches(false);

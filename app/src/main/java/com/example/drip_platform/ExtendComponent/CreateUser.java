@@ -31,7 +31,7 @@ public class CreateUser extends AsyncTask<String,Void,String> {
                     HttpURLConnection connection;
                     OutputStream outputStream;
                     //URL url = new URL("http://203.64.128.65:81/create_user");
-                    URL url = new URL("https://8504-59-120-123-50.jp.ngrok.io/create_user");
+                    URL url = new URL("https://"+L.getResources().getString(R.string.login_server)+"create_user");
                     connection = (HttpURLConnection) url.openConnection();
 
                     connection.setUseCaches(false);

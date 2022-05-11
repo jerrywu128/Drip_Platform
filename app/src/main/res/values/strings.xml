@@ -17,4 +17,6 @@
     <string name="password_different">輸入密碼不相同</string>
     <string name="create_cucess">創建成功</string>
     <string name="create_fail">創建失敗</string>
+    <string name="login_server">00fa&#45;59&#45;120&#45;123&#45;53.jp.ngrok.io/</string>
+    <string name="rpi_server">97bd&#45;59&#45;120&#45;123&#45;53.jp.ngrok.io/</string>
 </resources>

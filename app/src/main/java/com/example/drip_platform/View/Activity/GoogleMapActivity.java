@@ -32,7 +32,7 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
 
     private Handler handler = new Handler();
     private com.google.android.gms.maps.GoogleMap mMap;
-    private Mongodb mongodb1 = new Mongodb();
+    private Mongodb mongodb1 = new Mongodb(this);
     private float final_la = 0;
     private float final_lo = 0;
     private float last_la = 0;

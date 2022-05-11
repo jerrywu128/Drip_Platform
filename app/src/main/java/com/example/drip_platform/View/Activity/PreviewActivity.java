@@ -73,7 +73,7 @@ public class PreviewActivity extends AppCompatActivity  implements OnMapReadyCal
     private float last_la = 0;
     private float last_lo = 0;
 
-    private Mongodb mongodb1 = new Mongodb();
+    private Mongodb mongodb1 = new Mongodb(this);
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
