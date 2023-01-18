@@ -10,21 +10,30 @@ android:layout_height="match_parent">
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
+    android:background="#4490e1"
     android:orientation="vertical"
 
     >
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:text="Elderly Healthcare System"
+        android:textColor="@color/w"
         />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:background="@color/blue"
+        android:background="#4490e1"
         android:src="@drawable/cross"
         />
     <TextView
@@ -35,12 +44,21 @@ android:layout_height="match_parent">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:background="#80DEEA"
+        android:background="#4f50ef"
         android:gravity="center"
-        android:text="@string/homepage_title"
+
         android:textColor="#ffffff"
         android:textSize="15sp"
         android:textStyle="bold" />
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical"
+
+        >
+
 
     <TextView
     android:layout_width="match_parent"
@@ -53,13 +71,13 @@ android:layout_height="match_parent">
               android:layout_height="wrap_content"
               android:layout_gravity="center"
               android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@."
-              android:drawableRight="@drawable/ic_person_black_24dp"
+              android:drawableRight="@drawable/ic_outline_person_24"
               android:drawablePadding="16dp"
-              android:backgroundTint="@color/w"
+              android:backgroundTint="#4490e1"
               android:hint="Account"
               android:inputType="textVisiblePassword"
               android:textColor="@color/w"
-              android:textColorHint="@color/w"
+              android:textColorHint="@color/black"
               android:textSize="16dp" />
 
 
@@ -70,13 +88,13 @@ android:layout_height="match_parent">
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:drawableRight="@drawable/ic_lock_black_24dp"
+        android:drawableRight="@drawable/ic_baseline_lock_24"
         android:drawablePadding="16dp"
-        android:backgroundTint="@color/w"
+        android:backgroundTint="#4490e1"
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="@color/w"
-        android:textColorHint="@color/w"
+        android:textColorHint="@color/black"
         android:textSize="16dp"
         />
 
@@ -92,7 +110,7 @@ android:layout_height="match_parent">
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/colorlight"
+        android:background="#4f50ef"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="15dp"
@@ -106,16 +124,41 @@ android:layout_height="match_parent">
 
     <Button
         android:id="@+id/sign_up"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:background="@color/lightgray"
+        android:background="@drawable/ic_baseline_qr_code_scanner_24"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="15dp"
-        android:text="@string/Sign_up"
+        android:visibility="gone"
         />
+        <LinearLayout
 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/qr_code_shape"
+            android:orientation="vertical"
+
+
+            >
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_baseline_qr_code_scanner_24"
+        android:gravity="center"
+
+        />
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:textAlignment="center"
+            android:text="QR Code Log In"
+            />
+        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

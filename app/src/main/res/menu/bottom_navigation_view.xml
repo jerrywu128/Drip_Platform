@@ -6,16 +6,16 @@
             <item
                 android:id="@+id/action_home"
                 android:icon="@drawable/ic_outline_home_24"
-                android:title="主頁" />
+                android:title="Home" />
             <item
                 android:id="@+id/action_device"
                 android:icon="@drawable/ic_outline_medical_services_24"
-                android:title="設備" />
+                android:title="Device" />
 
             <item
                 android:id="@+id/action_personal"
                 android:icon="@drawable/ic_outline_person_24"
-                android:title="個人" />
+                android:title="Personal" />
 
         </group>
 

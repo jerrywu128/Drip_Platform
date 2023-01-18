@@ -59,7 +59,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private BottomNavigationView bottomNavigationView;
     private SupportMapFragment mapFragment;
 
-    String[] spinner = new String[] {"藥劑剩餘劑量","脈搏心率(請患者輕壓傳感器)","所在位置"};
+    String[] spinner = new String[] {"Remaining dose of the drug","Pulse heart rate (ask the patient to gently press the sensor)","Location"};
     private View google_map_view,heart;
 
 
@@ -119,8 +119,8 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
 
 
 
-        Patient_ID.setText("UUID:test-0000-0001");
-        image.setImageResource(R.drawable.drip);
+        //Patient_ID.setText("Patient ID: A123456");
+        image.setImageResource(R.drawable.hospitalisation);
         toolbar=(Toolbar)view.findViewById(R.id.toolbar);
         elec = view.findViewById(R.id.electrocardiogram);
         showWaveData(elec);
@@ -380,18 +380,18 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
         String [] data = mongodb1.show();
 
         String T = "Please wait ..";
-        String N = "數值：0";
+        String N = "Gram：0";
 
         try {
             T = data[4];
-            N = "數值 " + data[8];
+            N = "Gram " + data[8];
             num = N;
 
             AlertDialog.Builder adbATM = new AlertDialog.Builder(getContext());
-            adbATM.setTitle("警告");
+            adbATM.setTitle("Warn");
             adbATM.setIcon(R.drawable.sign);
-            adbATM.setMessage("重量低於規定值");
-            adbATM.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+            adbATM.setMessage("Gram below the specified value");
+            adbATM.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                 }
@@ -405,7 +405,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
                     adbATM.show();
                     message=1;
                     Status.setTextColor(Color.RED);
-                    Status.setText("狀態: 低下");
+                    Status.setText("Status: lower");
                 }
             }
         }catch (Exception e) {
@@ -445,13 +445,13 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
                         if(!editText.getText().toString().matches("")) {
                             if(Integer.valueOf(editText.getText().toString())<=99999) {
                                 Critical_value = Integer.parseInt(String.valueOf(editText.getText()));
-                                Critical_text.setText(" 警戒值:" + Critical_value);
+                                Critical_text.setText(" Alert value:" + Critical_value);
                                 message = 0;
 
 
                                 AlertDialog.Builder twoDialog = new AlertDialog.Builder(getContext());
-                                twoDialog.setTitle("設定完成");
-                                twoDialog.setPositiveButton("確定", ((dialog1, which) -> {
+                                twoDialog.setTitle("Set complete");
+                                twoDialog.setPositiveButton("Sure", ((dialog1, which) -> {
                                 }));
                                 twoDialog.show();
                             }
