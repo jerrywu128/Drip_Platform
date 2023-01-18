@@ -63,6 +63,7 @@ public class PreviewFragment extends Fragment  implements OnMapReadyCallback {
     private View google_map_view,heart;
 
 
+    
 
     private Timer timer;
     private TimerTask timerTask;
